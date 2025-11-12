@@ -48,7 +48,7 @@ ALTER TABLE `instructors`
 -- Drop student_status table if it exists
 DROP TABLE IF EXISTS `students_status`;
 
--- Create student_languages table providing grade and descriptive update of how students are doing
+-- Create students_status table providing grade and descriptive update of how students are doing
 
 CREATE TABLE IF NOT EXISTS `students_status` (
     `student_id` int(11) NOT NULL,
@@ -56,12 +56,12 @@ CREATE TABLE IF NOT EXISTS `students_status` (
     `student_update` varchar(99) NOT NULL
 );
 
--- Make student_languages.id column primary key and create index 
+-- Make students_status.id column primary key and create index 
 ALTER TABLE `students_status`
     ADD PRIMARY KEY (`student_id`),
     ADD KEY `students_status_ibfk_1` (`student_id`);
 
--- Make student_languages.id column Auto Increment
+-- Make students_status.id column Auto Increment
 ALTER TABLE `students_status`
     MODIFY `student_id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -73,7 +73,7 @@ ALTER TABLE `students_status`
     ON DELETE CASCADE 
     ON UPDATE CASCADE;
 
--- ---------------------------------------------------------------------------------------------------
+-- ***************************************************************************************************
 
 -- STUDENT_LANGUAGE_XREF TABLE
 
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `student_language_xref` (
     `first_name` varchar(25) NOT NULL,
     `middle_name` varchar(25) NOT NULL,
     `last_name` varchar(25) NOT NULL,
-    `new_languages` varchar(50) NOT NULL,
+    `languages` varchar(50) NOT NULL,
     `proficiency` varchar(99) NOT NULL,
     `grade` char(2) NOT NULL,
     `student_update` varchar(99) NOT NULL
@@ -95,21 +95,21 @@ CREATE TABLE IF NOT EXISTS `student_language_xref` (
 -- Create indexes for student_id and languages
 ALTER TABLE `student_language_xref`
     ADD KEY `student_language_xref_ibfk_1` (`student_id`),
-    ADD KEY `student_language_xref_ibfk_2` (`new_languages`);
+    ADD KEY `student_language_xref_ibfk_2` (`languages`);
 
 -- Add Cascade Delete Constraint on student_id column
 ALTER TABLE `student_language_xref`
     ADD CONSTRAINT `student_language_ibfk_1`
-    FOREIGN KEY (`student_id`) REFERENCES `students` (`id`)
+    FOREIGN KEY (`student_id`) REFERENCES `students_status` (`student_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE;
 
--- Add Cascade Delete Constraint on languages column
-ALTER TABLE `student_language_xref`
+-- Add Cascade Delete Constraint on languages column (Need to ask Professor about this one)
+/* ALTER TABLE `student_language_xref`
     ADD CONSTRAINT `student_language_ibfk_2`
-    FOREIGN KEY (`new_languages`) REFERENCES `languages` (`id`)
+    FOREIGN KEY (`languages`) REFERENCES `students` (`languages`)
     ON UPDATE CASCADE;
-
+*/
 
 
 

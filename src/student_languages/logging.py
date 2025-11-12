@@ -60,7 +60,6 @@ class LoggingService():
                 self._logger.addHandler(self._fh)
         
 
-    
     def log_debug(self, message):
         """Log to debug."""
         self._logger.debug(message)

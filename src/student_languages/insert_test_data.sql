@@ -51,3 +51,11 @@ INSERT INTO `students_status` (student_id, grade, student_update)
     VALUES (4, 'A-', 'Doing well, will just need to submit missing assignments for final grade');
 
 
+-- Insert test data into student_language_xref
+
+INSERT INTO `student_language_xref` (student_id, first_name, middle_name, last_name, languages, proficiency, grade, student_update)
+    VALUES (1, 'Deion', 'Denzel', 'Cottingham', 'Spanish, French', '85, 80', 'B', 'Need improvement, can at least get an A-');
+
+ INSERT INTO `student_language_xref` (student_id, first_name, middle_name, last_name, languages, proficiency, grade, student_update)
+    VALUES (2, 'Trinity', 'Rain', 'Moyer-Rodman', 'Japanese', '90', 'A-', 'Doing well, will just need to submit missing assignments for final grade');
+

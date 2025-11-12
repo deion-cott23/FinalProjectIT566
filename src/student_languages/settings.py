@@ -11,8 +11,7 @@ class Settings():
         """Initialize instance."""
         self._default_settings_filename = default_settings_filename
 
-    def create_settings_json_file(self, 
-                                filename:str='app_settings.json') -> dict:
+    def create_settings_json_file(self, filename:str='app_settings.json') -> dict:
         """Create default settings file if none exists."""
         if not isinstance(filename, str):
             filename = self._default_settings_filename
