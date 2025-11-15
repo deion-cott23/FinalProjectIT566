@@ -1,23 +1,23 @@
 {
 	"meta":{
-	   "version": "v1",
-	   "app_name": "Language Learning: Students and Languages",
-	   "log_prefix": "student_languages"
+		"version": "v1",
+		"app_name": "Language Learning: Students and Languages",
+		"log_prefix": "student_languages"
 	},
 	"database":{
-	   "pool":{
-		   "name": "emp_language_app_db_bool",
-		   "size": 10,
-		   "reset_session": true
-	   },
-	   "connection":{
-		"config":{
-			"database": "student_languages",
-			"user": "student_languages_user",
-			"host": "localhost",
-			"port": 3306
+		"pool":{
+			"name": "student_languages_app_db_bool",
+			"size": 10,
+			"reset_session": true,
+			"use_pure": true
+		},
+		"connection":{
+			"config":{
+				"database": "student_languages",
+				"user": "student_languages_user",
+				"host": "localhost",
+				"port": 3306
+			}
 		}
-		
-	   }
 	}
 }

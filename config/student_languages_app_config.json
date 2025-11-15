@@ -6,9 +6,10 @@
 	},
 	"database":{
 		"pool":{
-			"name": "emp_language_app_db_bool",
+			"name": "student_languages_app_db_bool",
 			"size": 10,
-			"reset_session": true
+			"reset_session": true,
+			"use_pure": true
 		},
 		"connection":{
 			"config":{

@@ -1,0 +1,11 @@
+DEBUG:MySQLPersistenceWrapper:2025-10-20 20:54:19,546:__init__:It works!
+DEBUG:MySQLPersistenceWrapper:2025-10-20 20:54:19,550:__init__: DB Connection Config Dict: {'database': 'database_name', 'user': 'database_username', 'host': 'localhost', 'port': 3306}
+DEBUG:AppServices:2025-10-20 20:54:19,550:__init__:It works!
+DEBUG:UserInterface:2025-10-20 20:54:19,550:__init__:It works!
+DEBUG:UserInterface:2025-10-20 20:54:19,550:start: User interface started!
+DEBUG:MySQLPersistenceWrapper:2025-11-12 14:19:23,516:__init__:It works!
+DEBUG:MySQLPersistenceWrapper:2025-11-12 14:19:23,516:__init__: DB Connection Config Dict: {'database': 'student_languages', 'user': 'student_languages_user', 'host': 'localhost', 'port': 3306}
+DEBUG:MySQLPersistenceWrapper:2025-11-12 14:19:23,563:Creating connection pool...
+ERROR:MySQLPersistenceWrapper:2025-11-12 14:19:23,604:_initialize_database_connection_pool: Problem creating connection pool: 1045 (28000): Access denied for user 'student_languages_user'@'localhost' (using password: NO)
+ERROR:MySQLPersistenceWrapper:2025-11-12 14:19:23,604:_initialize_database_connection_pool: Check DB cnfg:
+{"pool": {"name": "emp_language_app_db_bool", "size": 10, "reset_session": true}, "connection": {"config": {"database": "student_languages", "user": "student_languages_user", "host": "localhost", "port": 3306}}}

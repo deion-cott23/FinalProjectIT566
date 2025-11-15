@@ -1,8 +1,8 @@
 """Defines the MySQLPersistenceWrapper class."""
 
 from student_languages.application_base import ApplicationBase
-from mysql import connector
-from mysql.connector.pooling import (MySQLConnectionPool)
+from mysql import connector  # type: ignore
+from mysql.connector.pooling import (MySQLConnectionPool) # type: ignore
 import inspect
 import json
 
@@ -34,15 +34,75 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		
 
 		# SQL String Constants
-
-
-
-
+		self.SELECT_ALL_USERS = \
+			f"SELECT id, first_name, middle_name, last_name, birthday, gender, languages, proficiency " \
+			f"FROM students"
+		
+		self.SELECT_ALL_USERS_WITH_LANGUAGES = \
+			f"SELECT `students`.id, first_name, middle_name, last_name, " \
+				f"languages, proficiency, grade, student_update" \
+			f"FROM students, students_status, student_language_xref" \
+			f"WHERE (`students`.id = id) AND `students_status`.id = student_id"
+		
+		self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID = \
+			f"SELECT student_id, grade, student_update " \
+			f"FROM students_status, student_language_xref " \
+			f"WHERE (student_id = %s) AND (`students`.id = student_id)"
+	
 
 	# MySQLPersistenceWrapper Methods
+		
+	def select_all_users(self)->list:
+		"""Returns a list of all employee rows."""
+		cursor = None
+		results = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.SELECT_ALL_USERS)
+					results = cursor.fetchall()
+
+			return results
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
 
+	def select_all_users_with_languages(self)->list:
+		"""Returns a list of all student rows with languages."""
+		cursor = None
+		results = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.SELECT_ALL_USERS_WITH_LANGUAGES)
+					result = cursor.fetchall()
+			
+			return results
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
+
+	def select_students_status_from_student_id(self, student_ids:int)->list:
+		"""Returns a list of language rows for student id."""
+		cursor = None
+		results = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID, ([student_ids]))
+					results = cursor.fetchall()
+			return results
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
 
 		##### Private Utility Methods #####
@@ -55,6 +115,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 				MySQLConnectionPool(pool_name = self.DATABASE["pool"]["name"],
 					pool_size=self.DATABASE["pool"]["size"],
 					pool_reset_session=self.DATABASE["pool"]["reset_session"],
+					use_pure=self.DATABASE["pool"]["use_pure"],
 					**config)
 			self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: Connection pool successfully created!')
 			return cnx_pool
