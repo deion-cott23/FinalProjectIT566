@@ -35,18 +35,18 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 		# SQL String Constants
 		self.SELECT_ALL_USERS = \
-			f"SELECT id, first_name, middle_name, last_name, birthday, gender, languages, proficiency " \
+			f"SELECT id, first_name, middle_name, last_name, birthday, gender " \
 			f"FROM students"
 		
 		self.SELECT_ALL_USERS_WITH_LANGUAGES = \
 			f"SELECT `students`.id, first_name, middle_name, last_name, " \
-				f"languages, proficiency, grade, student_update" \
-			f"FROM students, students_status, student_language_xref" \
-			f"WHERE (`students`.id = id) AND `students_status`.id = student_id"
+				f"language, dialect, description, proficiency, grade, student_update" \
+			f"FROM students, languages, student_language_xref" \
+			f"WHERE (`students`.id = students_id) AND (`languages`.languages_id = language_id)"
 		
 		self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID = \
 			f"SELECT student_id, grade, student_update " \
-			f"FROM students_status, student_language_xref " \
+			f"FROM students, student_language_xref " \
 			f"WHERE (student_id = %s) AND (`students`.id = student_id)"
 	
 
@@ -88,7 +88,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
 
-	def select_students_status_from_student_id(self, student_ids:int)->list:
+	def select_students_status_from_student_id(self, student_id:int)->list:
 		"""Returns a list of language rows for student id."""
 		cursor = None
 		results = None
@@ -97,7 +97,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			with connection:
 				cursor = connection.cursor()
 				with cursor:
-					cursor.execute(self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID, ([student_ids]))
+					cursor.execute(self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID, ([student_id]))
 					results = cursor.fetchall()
 			return results
 		
