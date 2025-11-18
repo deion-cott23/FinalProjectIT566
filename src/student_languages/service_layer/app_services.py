@@ -14,3 +14,12 @@ class AppServices(ApplicationBase):
 				   logfile_prefix_name=self.META["log_prefix"])
         self.DB = MySQLPersistenceWrapper(config)
         self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}:It works!')
+
+    """
+    def select_all_users(self)->list(students):
+    	Returns a list of all user rows
+		
+        return self.DB_SELECT_ALL_USERS()
+    """
+		
+		

@@ -8,7 +8,6 @@ from student_languages.presentation_layer.user_interface import UserInterface
 
 
 
-
 def main():
 	"""Entry point."""
 	args = configure_and_parse_commandline_arguments()
@@ -17,29 +16,28 @@ def main():
 		config = None
 		with open(args.configfile, 'r') as f:
 			config = json.loads(f.read())
-			print(config) 
-			"""May need to possibly remove"""
+
 
 		db = MySQLPersistenceWrapper(config)
-		students_list = db.select_all_users()
-		for students in students_list:
-			print(f'{students}')
+		students_list = db.select_all_students()
+		for student in students_list:
+			print(f'{student}')
+
 
 		print('*' * 80)
-		students_list = db.select_all_users_with_languages()
-		for students in students_list:
-			print(f'{students_list}')
-		
+		students_list = db.select_all_students_with_languages()
+		for student in students_list:
+			print(f'{student}')
+
 
 		print('*' * 80)
-		students_list = db.select_all_users()
-		for students in students_list:
-			print(f'{students[1]} {students[4]}')
-			language_list = db.select_students_status_from_student_id(students[0])
-			for languages in language_list:
-				language_string = f'\t{languages[0]} {languages[1]} {languages[2]} {languages[3]} ' \
-										 f'{languages[4]}'
-				print(language_string)
+		students_list = db.select_all_students()
+		for student in students_list:
+			print(f'{student[1]} {student[4]}')
+			update_list = db.select_students_status_from_student_id(student[0])
+			for student_update in update_list:
+				update_string = f'\t{student_update[0]} {student_update[1]} {student_update[2]} '
+				print(update_string)
 
 
 	ui = UserInterface(config)

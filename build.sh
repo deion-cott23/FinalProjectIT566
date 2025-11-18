@@ -8,7 +8,7 @@ declare -r DOCS_DIR="docs"
 
 # TOOLS: A list of required tools. Edit as required.
 
-declare -r TOOLS="git python3 pipenv"
+declare -r TOOLS="git python pipenv"
 
 #Global Variables
 
