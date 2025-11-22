@@ -1,15 +1,24 @@
 /* ************************************************************
 Drop and Create the tables for the student langauges teaching database.
 *************************************************************** */
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
 
 -- Switch to student_languages database
 USE `student_languages`
 
 -- Drop the table if it exists
-DROP TABLE IF EXISTS `students`;
+/* DROP TABLE IF EXISTS `students`;
 
 DROP TABLE IF EXISTS `instructors`;
-
+*/
 -- Create the table 
 CREATE TABLE IF NOT EXISTS `students` (
     `id` int(11) NOT NULL,
@@ -18,7 +27,16 @@ CREATE TABLE IF NOT EXISTS `students` (
     `last_name` varchar(25) NOT NULL,
     `birthday` varchar(25) NOT NULL,
     `gender` char(1) NOT NULL
-);
+) ENGINE=iNNOdb DEFAULT CHARSET=utf8 COMMENT='Store students data.';
+
+-- RELATIONSHIPS FOR TABLE `students`:
+--
+--
+
+-- -------------------------------------------------------------------------------------
+
+-- Create table for instructors.
+--
 
 CREATE TABLE IF NOT EXISTS `instructors` (
     `id` int(11) NOT NULL,
@@ -27,7 +45,14 @@ CREATE TABLE IF NOT EXISTS `instructors` (
     `last_name` varchar(25) NOT NULL,
     `languages` varchar(50) NOT NULL,
     `critiques` varchar(99) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store instructors data.';
+
+-- RELATIONSHIPS FOR TABLE `instructors`:
+--
+
+-- ----------------------------------------------------------------------------------------
+
+
 
 -- Designate the 'id' column as the primary key
 ALTER TABLE `students`
@@ -44,7 +69,7 @@ ALTER TABLE `instructors`
     MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 -- Drop student_status table if it exists
-DROP TABLE IF EXISTS `languages`;
+-- DROP TABLE IF EXISTS `languages`;
 
 -- Create languages table providing languages, dialect and description of where language originates
 
@@ -53,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
     `language` varchar(50) NOT NULL,
     `dialect` varchar(99) NOT NULL,
     `description` varchar(99) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores languages data.';
 
 -- Make languages.id column primary key and create index 
 ALTER TABLE `languages`
@@ -72,7 +97,7 @@ ALTER TABLE `languages`
 -- STUDENT_LANGUAGE_XREF TABLE
 
 -- Drop student_language_xref if it exists
-DROP TABLE IF EXISTS `student_language_xref`;
+-- DROP TABLE IF EXISTS `student_language_xref`;
 
 -- Create student_language_xref table
 CREATE TABLE IF NOT EXISTS `student_language_xref` (
@@ -81,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `student_language_xref` (
     `proficiency` varchar(99) NOT NULL,
     `grade` char(2) NOT NULL,
     `student_update` varchar(99) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Relates students to languages being studied.';
 
  -- Create indexes for student_id and languages
 ALTER TABLE `student_language_xref`
@@ -109,7 +134,7 @@ ALTER TABLE `student_language_xref`
 
 -- Drop student_instructor_language_xref if it exists
 
-DROP TABLE IF EXISTS `student_instructor_language_xref`;
+-- DROP TABLE IF EXISTS `student_instructor_language_xref`;
 
 -- Create student_instructor_language_xref table
 CREATE TABLE IF NOT EXISTS `student_instructor_language_xref` (
@@ -135,3 +160,10 @@ ALTER TABLE `student_instructor_language_xref`
     ADD CONSTRAINT `student_instructor_language_xref_ibfk_2`
     FOREIGN KEY (`language_instructor_id`) REFERENCES `student_language_xref` (`language_id`)
     ON UPDATE CASCADE;
+
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

@@ -54,7 +54,7 @@ INSERT INTO `languages` (languages_id, language, dialect, description)
     VALUES (4, 'Japanese', 'Eastern/Western',  'This language stems from the Tokyo dialect between modern Japanese and Kansai-ben.');
 
 INSERT INTO `languages` (languages_id, language, dialect, description)
-    VALUES (5, 'Arabic', 'Egyption/Gulf/Mesopotamian', 'This language stems from multiple areas and forms Modern Standard Arabic.');
+    VALUES (5, 'Arabic', 'Egyptian/Gulf/Mesopotamian', 'This language stems from multiple areas and forms Modern Standard Arabic.');
 
 -- Insert test data into student_language_xref
 
@@ -91,3 +91,14 @@ INSERT INTO `student_instructor_language_xref` (students_instructor_id, language
 
 INSERT INTO `student_instructor_language_xref` (students_instructor_id, language_instructor_id, instructor_critiques)
     VALUES (5, 1, 'Pair well together!');
+
+
+
+/* -- Switch to new database reflecting new database
+
+USE `student_languages_new`
+
+
+-- Insert data into students_new table
+
+INSER INTO `

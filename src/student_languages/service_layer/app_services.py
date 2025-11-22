@@ -1,8 +1,14 @@
-"""Implements AppServices Class."""
+"""Implements AppServices Class and the application service layer."""
 
 from student_languages.application_base import ApplicationBase
 from student_languages.persistence_layer.mysql_persistence_wrapper import MySQLPersistenceWrapper
 import inspect
+import json
+from typing import List
+from student_languages.infrastructure_layer.students import Students
+from student_languages.infrastructure_layer.instructors import Instructors
+
+
 
 class AppServices(ApplicationBase):
     """AppServices Class Definition."""
@@ -15,11 +21,59 @@ class AppServices(ApplicationBase):
         self.DB = MySQLPersistenceWrapper(config)
         self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}:It works!')
 
-    """
-    def select_all_users(self)->list(students):
-    	Returns a list of all user rows
-		
-        return self.DB_SELECT_ALL_USERS()
-    """
-		
-		
+
+    def get_all_students(self)->List[Students]:
+        """Returns a list of student objects."""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        student_dict = {}
+        student_dict['students'] = []
+
+        try:
+            results = self.DB.select_all_students()
+            return results
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+    def get_all_instructors(self)->List[Instructors]:
+        """Returns a list of instructor objects."""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        instructor_dict = {}
+        instructor_dict['instructors'] = []
+
+        try:
+            results = self.DB.select_all_instructors()
+            return results
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+    
+    def get_all_students_as_json(self)->str:
+        """Return all students as JSON String"""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        try:
+            results = self.DB.select_all_students()
+            return json.dumps(results)
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}:{e}')
+
+
+
+    def get_all_instructors_as_json(self)->str:
+        """Return all instructors as JSON string"""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        try:
+            results = self.DB.select_all_instructors()
+            return json.dumps(results)
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}:{e}')
+
+
+
+    

@@ -4,7 +4,9 @@ import json
 from argparse import ArgumentParser
 from student_languages.persistence_layer.mysql_persistence_wrapper \
 	import MySQLPersistenceWrapper
+from student_languages.service_layer.app_services import AppServices
 from student_languages.presentation_layer.user_interface import UserInterface
+from student_languages.presentation_layer.console_ui import ConsoleUI
 
 
 
@@ -16,6 +18,17 @@ def main():
 		config = None
 		with open(args.configfile, 'r') as f:
 			config = json.loads(f.read())
+		
+		ui = ConsoleUI(config)
+		ui.start()
+		
+		service_layer = AppServices(config)
+		students_list = service_layer.get_all_students()
+		students_list = service_layer.get_all_students_as_json()
+		instructors_list = service_layer.get_all_instructors()
+		instructors_list = service_layer.get_all_instructors_as_json()
+		print(students_list)
+		print(instructors_list)
 
 
 		db = MySQLPersistenceWrapper(config)

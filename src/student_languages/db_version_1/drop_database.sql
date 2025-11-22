@@ -1,10 +1,3 @@
-
-/* ******************************************
-Create the student_languages database.
-Drop the database if it already exists.
-
-******************************************** */
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -14,12 +7,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
-
--- Create Database: `student_languages`
 --
-
-CREATE DATABASE IF NOT EXISTS `student_languages`
-    DEFAULT CHARACTER SET utf8;
+-- Drop Database: `student_languages`
+--
+DROP DATABASE IF EXISTS `student_languages`;
 
 COMMIT;
 
