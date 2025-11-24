@@ -30,7 +30,7 @@ class Instructors():
         instructors_dict['first_name'] = self.first_name
         instructors_dict['middle_name'] = self.middle_name
         instructors_dict['last_name'] = self.last_name
-        instructors_dict['languages'] = []
+        instructors_dict['languages'] = self.languages
         instructors_dict['critiques'] = self.critiques
 
         for item in self.languages:

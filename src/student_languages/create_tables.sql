@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `students` (
     `last_name` varchar(25) NOT NULL,
     `birthday` varchar(25) NOT NULL,
     `gender` char(1) NOT NULL
-) ENGINE=iNNOdb DEFAULT CHARSET=utf8 COMMENT='Store students data.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Store students data.';
 
 -- RELATIONSHIPS FOR TABLE `students`:
 --

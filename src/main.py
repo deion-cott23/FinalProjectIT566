@@ -23,15 +23,14 @@ def main():
 		ui.start()
 		
 		service_layer = AppServices(config)
-		students_list = service_layer.get_all_students()
 		students_list = service_layer.get_all_students_as_json()
-		instructors_list = service_layer.get_all_instructors()
 		instructors_list = service_layer.get_all_instructors_as_json()
 		print(students_list)
 		print(instructors_list)
+		
 
 
-		db = MySQLPersistenceWrapper(config)
+		""" db = MySQLPersistenceWrapper(config)
 		students_list = db.select_all_students()
 		for student in students_list:
 			print(f'{student}')
@@ -54,7 +53,7 @@ def main():
 
 
 	ui = UserInterface(config)
-	ui.start()
+	ui.start() """
 			
 		
 

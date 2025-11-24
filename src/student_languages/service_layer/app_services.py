@@ -22,8 +22,8 @@ class AppServices(ApplicationBase):
         self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}:It works!')
 
 
-    def get_all_students(self)->List[Students]:
-        """Returns a list of student objects."""
+    """ def get_all_students(self)->List[Students]:
+        Returns a list of student objects.
         self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
         student_dict = {}
         student_dict['students'] = []
@@ -33,12 +33,12 @@ class AppServices(ApplicationBase):
             return results
         
         except Exception as e:
-            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+            self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: {e}')
 
-
+ 
 
     def get_all_instructors(self)->List[Instructors]:
-        """Returns a list of instructor objects."""
+        Returns a list of instructor objects.
         self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
         instructor_dict = {}
         instructor_dict['instructors'] = []
@@ -48,7 +48,7 @@ class AppServices(ApplicationBase):
             return results
         
         except Exception as e:
-            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}') """
 
 
     
@@ -73,7 +73,7 @@ class AppServices(ApplicationBase):
         
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}:{e}')
-
+ 
 
 
     
