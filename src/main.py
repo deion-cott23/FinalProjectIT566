@@ -30,14 +30,14 @@ def main():
 		
 
 
-		""" db = MySQLPersistenceWrapper(config)
+		db = MySQLPersistenceWrapper(config)
 		students_list = db.select_all_students()
 		for student in students_list:
 			print(f'{student}')
 
 
 		print('*' * 80)
-		students_list = db.select_all_students_with_languages()
+		students_list = db.select_all_students_with_languages(student)
 		for student in students_list:
 			print(f'{student}')
 
@@ -53,7 +53,7 @@ def main():
 
 
 	ui = UserInterface(config)
-	ui.start() """
+	ui.start() 
 			
 		
 
