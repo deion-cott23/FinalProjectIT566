@@ -37,6 +37,7 @@ def main():
 
 
 		print('*' * 80)
+		student = None
 		students_list = db.select_all_students_with_languages(student)
 		for student in students_list:
 			print(f'{student}')

@@ -83,7 +83,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		"""Returns a list of all user rows."""
 		cursor = None
 		results = None
-		students_list_ = []
+		students_list = []
 		try:
 			connection = self._connection_pool.get_connection()
 			with connection:
@@ -91,16 +91,17 @@ class MySQLPersistenceWrapper(ApplicationBase):
 				with cursor:
 					cursor.execute(self.SELECT_ALL_STUDENTS)
 					results = cursor.fetchall()
-					"""students_list_ = self._populate_student_objects(results)"""
+					self._logger.log_debug(f'{inspect.currentframe().f_code.co_name} {results}')
+					students_list = self._populate_student_objects(results)
 			
-			for student in students_list_:
-				languages_list = \
-					self.select_all_students_with_languages(student.id)
-				self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: \
-						   {languages_list}')
-				"""student.language = self._populate_language_objects(languages_list)"""
+			# for student in students_list:
+			# 	languages_list = \
+			# 		self.select_all_students_with_languages(student.id)
+			# 	self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: \
+			# 			   {languages_list}')
+			# 	student.language = self._populate_language_objects(languages_list)
 
-			return students_list_
+			return students_list
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
@@ -119,14 +120,14 @@ class MySQLPersistenceWrapper(ApplicationBase):
 				with cursor:
 					cursor.execute(self.SELECT_ALL_INSTRUCTORS)
 					results = cursor.fetchall()
-					"""instructors_list = self._populate_instructor_objects(results)"""
+					instructors_list = self._populate_instructor_objects(results)
 
 			for instructors in instructors_list:
 				languages_list = \
 					self.select_all_students_with_languages(instructors.id)
 				self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: \
 						   {languages_list}')
-				"""instructors.language = self._populate_language_objects(languages_list)"""
+				instructors.language = self._populate_language_objects(languages_list)
 
 			return instructors_list
 		
@@ -136,7 +137,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 
 
-	def select_all_students_with_languages(self, students_id:str)->List[Languages]:
+	def select_all_students_with_languages(self, results)->List[Languages]:
 		"""Returns a list of all student rows with languages."""
 		cursor = None
 		results = None
@@ -145,7 +146,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			with connection:
 				cursor = connection.cursor()
 				with cursor:
-					cursor.execute(self.SELECT_ALL_STUDENTS_WITH_LANGUAGES, ([students_id]))
+					cursor.execute(self.SELECT_ALL_STUDENTS_WITH_LANGUAGES)
 					results = cursor.fetchall()
 			
 			return results
@@ -155,7 +156,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 		
 
-	def select_students_status_from_student_id(self, students_id:int) ->List[Languages]:
+	def select_students_status_from_student_id(self, students_id:int)->List[Languages]:
 		"""Returns a list of language rows for student id."""
 		cursor = None
 		results = None
@@ -197,8 +198,8 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 
 
-	""" def _populate_student_objects(self, results:List)->List[Students]:
-		'Populates and returns a list of Student objects.'
+	def _populate_student_objects(self, results:List)->List[Students]:
+		"""Populates and returns a list of Student objects."""
 		student_list = []
 		try:
 			for row in results:
@@ -218,7 +219,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 	
 	def _populate_instructor_objects(self, results:List)->List[Instructors]:
-		'Populates and returns a list of Instructor objects.'
+		"""Populates and returns a list of Instructor objects."""
 		instructor_list = []
 		try:
 			for row in results:
@@ -239,7 +240,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 
 	def _populate_language_objects(self, results:List)->List[Languages]:
-		'Populates and returns a list of Language objects.'
+		"""Populates and returns a list of Language objects."""
 		language_list = []
 		try:
 			for row in results:
@@ -254,4 +255,4 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
- """
+ 
