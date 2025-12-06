@@ -52,7 +52,9 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 		#Languages Column ENUMS
 		self.LanguageColumns = \
-		Enum('LanguageColumns', [('language', 0), ('dialect', 1), ('description', 2)])
+		Enum('LanguageColumns', [('languages id', 0), ('language', 1), ('dialect', 2), ('description', 3)])
+
+
 
 
 
@@ -76,6 +78,19 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			f"FROM student_language_xref " \
 			f"WHERE (students_id = %s)"
 	
+		
+		self.INSERT_STUDENT = \
+			f"INSERT INTO students " \
+			f"(first_name, middle_name, last_name, birthday, gender) " \
+			f"values(%s, %s, %s, %s, %s)"
+		
+
+		self.INSERT_INSTRUCTOR = \
+			f"INSERT INTO instructors " \
+			f"(first_name, middle_name, last_name, languages, critiques) " \
+			f"values(%s, %s, %s, %s, %s)"
+		
+
 
 	# MySQLPersistenceWrapper Methods
 		
@@ -171,6 +186,51 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+	
+
+	def create_student(self, student:Students)->Students:
+		"""Create a new record in the students table."""
+		cursor = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.INSERT_STUDENT, ([student.first_name, student.middle_name, student.last_name,
+						student.birthday, student.gender]))
+					connection.commit()
+					self._logger.log_debug(f'Updated {cursor.rowcount} row.')
+					self._logger.log_debug(f'Last Row ID: {cursor.lastrowid}.')
+					student.id = cursor.lastrowid
+
+			return student
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+	
+	def create_instructor(self, instructor:Instructors)->Instructors:
+		"""Create a new record in instructors table."""
+		cursor = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.INSERT_INSTRUCTOR, ([instructor.first_name, instructor.middle_name, 
+						instructor.last_name, instructor.languages, instructor.critiques]))
+					connection.commit()
+					self._logger.log_debug(f'Updated {cursor.rowcount} row.')
+					self._logger.log_debug(f'Last Row ID: {cursor.lastrowid}.')
+					instructor.id = cursor.lastrowid
+				
+			return instructor
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
 
 		
 

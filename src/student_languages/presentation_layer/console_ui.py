@@ -2,8 +2,14 @@
 
 from student_languages.service_layer.app_services import AppServices
 from student_languages.application_base import ApplicationBase
+from student_languages.infrastructure_layer.students import Students
+from student_languages.infrastructure_layer.instructors import Instructors
+from student_languages.infrastructure_layer.languages import Languages
 from prettytable import PrettyTable
 import sys
+import inspect
+from datetime import datetime
+
 
 
 class ConsoleUI(ApplicationBase):
@@ -63,8 +69,29 @@ class ConsoleUI(ApplicationBase):
             students_table.add_row([students.id, students.first_name, students.middle_name, students.last_name, 
                                     students.birthday, students.gender])
             students_table.add_divider()
-           # languages_table.clear_rows()
+            languages_table.clear_rows()
         print(students_table)
+
+
+    def add_student(self)->None:
+        """Add student."""
+        print("\n\tAdd Student...")
+        # new_student_list = PrettyTable()
+        student = Students()
+        try:
+            student.first_name = input('First Name: ')
+            student.middle_name = input('Middle Name: ')
+            student.last_name = input('Last Name: ')
+            birthday_input = input('Birthday (mm/dd/yyyy): ')
+            student.birthday = datetime.strptime(birthday_input, '%m/%d/%Y')
+            student.gender = input('Gender (M/F): ')
+            student = self.app_services.create_student(student=student)
+            print(f'New Student id: {student.id}')
+
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+            
 
 
     def list_instructors(self)->None:
@@ -82,31 +109,42 @@ class ConsoleUI(ApplicationBase):
             instructors_table.add_row([instructors.id, instructors.first_name, instructors.middle_name, instructors.last_name,
                                            instructors.languages, instructors.critiques])
             instructors_table.add_divider()
-            # languages_table.clear_rows()
+            languages_table.clear_rows()
         print(instructors_table)
+
+
+    def add_instructor(self)->None:
+        """Add instructor."""
+        print("\n\tAdd Instructor...")
+        instructor = Instructors()
+        try:
+            instructor.first_name = input('First Name: ')
+            instructor.middle_name = input('Middle Name: ')
+            instructor.last_name = input('Last Name: ')
+            instructor.languages = input('Languages: ')
+            instructor.critiques = input('Critiques: ')
+            instructor = self.app_services.create_instructor(instructor=instructor)
+            print(f'New Instructor id: {instructor.id}')
+
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
             
 
 
     def list_languages(self)->None:
         """List Languages"""
         print("list_languages() method stub called....")
+        languages = self.app_services.get_all_students_with_languages()
         language_table = PrettyTable()
         language_table.field_names = ['Language ID', 'Language', 'Dialect', 'Description']
-        for language in language:
-            language_table.add_row([language.languages_id, language.language, language.dialect, language.description])
+        for language in languages:
+            language_table.add_row([language.language_id, language.language, language.dialect, language.description])
             language_table.add_divider()
-           #  language_table.clear_rows()
+            language_table.clear_rows()
         print(language_table)
 
 
 
-    def add_student(self)->None:
-        """Add student."""
-        print("add_student() method stub called...")
-
-    def add_instructor(self)->None:
-        """Add instructor."""
-        print("add_instructor() method stub called...")
 
     def add_language(self)->None:
         """Add new language."""

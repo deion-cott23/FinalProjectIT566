@@ -36,6 +36,18 @@ class AppServices(ApplicationBase):
         except Exception as e:
             self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: {e}')
 
+
+    def create_student(self, student:Students)->Students:
+        """Creates a new student in the database."""
+
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        try:
+            results = self.DB.create_student(student)
+            return results
+        
+        except Exception as e:
+            self._logger.log_errr(f'{inspect.currentframe().f_code.co_name}: {e}')
+
  
 
     def get_all_instructors(self)->List[Instructors]:
@@ -52,9 +64,21 @@ class AppServices(ApplicationBase):
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
 
+    def create_instructor(self, instructor:Instructors)->Instructors:
+        """Creates a new instructor in the database."""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        try:
+            results = self.DB.create_instructor(instructor)
+            return results
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
 
-    def get_all_languages(self)->List[Languages]:
+
+
+    def get_all_students_with_languages(self)->List[Languages]:
+        """Returns a list of languages."""
         self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
         language_dict = {}
         language_dict['languages'] = []
@@ -65,6 +89,7 @@ class AppServices(ApplicationBase):
         
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+        
 
 
 

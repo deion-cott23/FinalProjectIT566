@@ -23,10 +23,12 @@ def main():
 		ui.start()
 		
 		service_layer = AppServices(config)
-		students_list = service_layer.get_all_students_as_json()
-		instructors_list = service_layer.get_all_instructors_as_json()
+		languages_list = service_layer.get_all_languages()
+		students_list = service_layer.get_all_students()
+		instructors_list = service_layer.get_all_instructors()
 		print(students_list)
 		print(instructors_list)
+		print(languages_list)
 		
 
 
