@@ -3,12 +3,13 @@
 import json
 from typing import List
 
+
 class Languages():
     """Implements a Languages entity."""
 
     def __init__(self)->None:
         self.language_id:int = 0
-        self.language:str = ""
+        self.language:List = []
         self.dialect:str = ""
         self.description:str = ""
     
@@ -28,3 +29,4 @@ class Languages():
         languages_dict['dialect'] = self.dialect
         languages_dict['description'] = self.description
         return json.dumps(languages_dict)
+    

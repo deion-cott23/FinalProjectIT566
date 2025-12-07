@@ -60,16 +60,13 @@ class ConsoleUI(ApplicationBase):
         students = self.app_services.get_all_students()
         students_table = PrettyTable()
         students_table.field_names = ['id', 'First Name', 'Middle Name', 'Last Name', 'Birthday', 'Gender']
-        languages_table = PrettyTable()
-        languages_table.field_names = ['Languages id', "Languages", "Dialect", "Description"]
-        languages_table.align = 'l'
         for students in students:
             # for languages in students.languages:
             #     languages_table.add_row([languages.languages_id, languages.language, languages.dialect, languages.description])
             students_table.add_row([students.id, students.first_name, students.middle_name, students.last_name, 
                                     students.birthday, students.gender])
             students_table.add_divider()
-            languages_table.clear_rows()
+           #  languages_table.clear_rows()
         print(students_table)
 
 
@@ -103,11 +100,11 @@ class ConsoleUI(ApplicationBase):
         languages_table = PrettyTable()
         languages_table.field_names = ['Languages id', "Languages", "Dialect", "Description"]
         for instructors in instructors:
-            # for languages in instructors.languages:
+            #   for languages in instructors.languages:
             #     languages_table.add_row([languages.languages_id, languages.language, languages.dialect, languages.description])
 
             instructors_table.add_row([instructors.id, instructors.first_name, instructors.middle_name, instructors.last_name,
-                                           instructors.languages, instructors.critiques])
+                                            instructors.languages, instructors.critiques])
             instructors_table.add_divider()
             languages_table.clear_rows()
         print(instructors_table)
@@ -137,7 +134,12 @@ class ConsoleUI(ApplicationBase):
         languages = self.app_services.get_all_students_with_languages()
         language_table = PrettyTable()
         language_table.field_names = ['Language ID', 'Language', 'Dialect', 'Description']
+        student_table = PrettyTable()
+        student_table.field_names = ['id', 'First Name', 'Middle Name', 'Last Name', 'Birthday', 'Gender']
         for language in languages:
+            for student in student:
+                student_table.add_row([student.id, student.first_name, student.middle_name, student.last_name, 
+                            student.birthday, student.gender])
             language_table.add_row([language.language_id, language.language, language.dialect, language.description])
             language_table.add_divider()
             language_table.clear_rows()

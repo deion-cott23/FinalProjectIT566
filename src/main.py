@@ -23,7 +23,7 @@ def main():
 		ui.start()
 		
 		service_layer = AppServices(config)
-		languages_list = service_layer.get_all_languages()
+		languages_list = service_layer.get_all_students_with_languages()
 		students_list = service_layer.get_all_students()
 		instructors_list = service_layer.get_all_instructors()
 		print(students_list)

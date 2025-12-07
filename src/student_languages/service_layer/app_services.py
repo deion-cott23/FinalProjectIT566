@@ -81,7 +81,9 @@ class AppServices(ApplicationBase):
         """Returns a list of languages."""
         self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
         language_dict = {}
+        student_dict = {}
         language_dict['languages'] = []
+        student_dict['students'] = []
 
         try:
             results = self.DB.select_all_students_with_languages()

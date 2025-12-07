@@ -52,7 +52,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 		#Languages Column ENUMS
 		self.LanguageColumns = \
-		Enum('LanguageColumns', [('languages id', 0), ('language', 1), ('dialect', 2), ('description', 3)])
+		Enum('LanguageColumns', [('language_id', 0), ('language', 1), ('dialect', 2), ('description', 3)])
 
 
 
@@ -156,6 +156,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		"""Returns a list of all student rows with languages."""
 		cursor = None
 		results = None
+		languages_list = []
 		try:
 			connection = self._connection_pool.get_connection()
 			with connection:
@@ -163,8 +164,9 @@ class MySQLPersistenceWrapper(ApplicationBase):
 				with cursor:
 					cursor.execute(self.SELECT_ALL_STUDENTS_WITH_LANGUAGES)
 					results = cursor.fetchall()
+					languages_list = self._populate_language_objects(results)
 			
-			return results
+			return languages_list
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
@@ -304,11 +306,12 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		language_list = []
 		try:
 			for row in results:
-				language = Languages()
-				language.language = row[self.LanguageColumns['language'].value]
-				language.dialect = row[self.LanguageColumns['dialect'].value]
-				language.description = row[self.LanguageColumns['description'].value]
-				language_list.append(language)
+				languages = Languages()
+				languages.language_id = row[self.LanguageColumns['language id'].value]
+				languages.language = row[self.LanguageColumns['language'].value]
+				languages.dialect = row[self.LanguageColumns['dialect'].value]
+				languages.description = row[self.LanguageColumns['description'].value]
+				language_list.append(languages)
 
 			return language_list
 		
