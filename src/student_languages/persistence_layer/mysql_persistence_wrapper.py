@@ -9,6 +9,7 @@ from typing import List
 from student_languages.infrastructure_layer.students import Students
 from student_languages.infrastructure_layer.languages import Languages
 from student_languages.infrastructure_layer.instructors import Instructors
+from student_languages.infrastructure_layer.student_language_xref import Student_Language_xref
 from enum import Enum
 
 
@@ -44,15 +45,19 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 		# Student Column ENUMS
 		self.StudentColumns = \
-		Enum('StudentColumns', [('id', 0), ('first_name', 1), ('middle_name', 2), ('last_name', 3), ('birthday', 4), ('gender', 5)])
+			Enum('StudentColumns', [('id', 0), ('first_name', 1), ('middle_name', 2), ('last_name', 3), ('birthday', 4), ('gender', 5)])
 		
 		# Instructors Column ENUMS
 		self.InstructorColumns = \
-		Enum('InstructorColumns', [('id', 0), ('first_name', 1), ('middle_name', 2), ('last_name', 3), ('languages', 4), ('critiques', 5)])
+			Enum('InstructorColumns', [('id', 0), ('first_name', 1), ('middle_name', 2), ('last_name', 3), ('languages', 4), ('critiques', 5)])
 
 		#Languages Column ENUMS
 		self.LanguageColumns = \
-		Enum('LanguageColumns', [('language_id', 0), ('language', 1), ('dialect', 2), ('description', 3)])
+			Enum('LanguageColumns', [('language_id', 0), ('language', 4), ('dialect', 5), ('description', 6)])
+		
+		#Student Language XRef ENUMS
+		self.Student_Language_XrefColumns = \
+			Enum('Student_Language_XrefColumns', [('students_id', 0), ('grade', 1), ('student_update', 2)])
 
 
 
@@ -76,7 +81,6 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID = \
 			f"SELECT students_id, grade, student_update " \
 			f"FROM student_language_xref " \
-			f"WHERE (students_id = %s)"
 	
 		
 		self.INSERT_STUDENT = \
@@ -89,6 +93,12 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			f"INSERT INTO instructors " \
 			f"(first_name, middle_name, last_name, languages, critiques) " \
 			f"values(%s, %s, %s, %s, %s)"
+		
+		
+		self.INSERT_ALL_STUDENTS_WITH_LANGUAGES = \
+			f"INSERT INTO languages " \
+			f"(language, dialect, description) " \
+			f"values(%s, %s, %s)"
 		
 
 
@@ -137,12 +147,12 @@ class MySQLPersistenceWrapper(ApplicationBase):
 					results = cursor.fetchall()
 					instructors_list = self._populate_instructor_objects(results)
 
-			for instructors in instructors_list:
-				languages_list = \
-					self.select_all_students_with_languages(instructors.id)
-				self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: \
-						   {languages_list}')
-				instructors.language = self._populate_language_objects(languages_list)
+			# for instructors in instructors_list:
+			# 	languages_list = \
+			# 		self.select_all_students_with_languages(instructors.id)
+			# 	self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: \
+			# 			   {languages_list}')
+			# 	instructors.language = self._populate_language_objects(languages_list)
 
 			return instructors_list
 		
@@ -152,7 +162,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 
 
 
-	def select_all_students_with_languages(self, results)->List[Languages]:
+	def select_all_students_with_languages(self)->List[Languages]:
 		"""Returns a list of all student rows with languages."""
 		cursor = None
 		results = None
@@ -165,26 +175,36 @@ class MySQLPersistenceWrapper(ApplicationBase):
 					cursor.execute(self.SELECT_ALL_STUDENTS_WITH_LANGUAGES)
 					results = cursor.fetchall()
 					languages_list = self._populate_language_objects(results)
+
+			# for students in languages_list:
+			# 	languages_list = \
+			# 		self.select_all_students_with_languages(students)
+			# 	self._logger.log_debug(f'{inspect.currentframe().f_code.co_name}: {languages_list}')
+			# 	students.language_id = self._populate_language_objects(languages_list)
 			
 			return languages_list
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
+
 		
 
-	def select_students_status_from_student_id(self, students_id:int)->List[Languages]:
+	def select_students_status_from_student_id(self)->List[Student_Language_xref]:
 		"""Returns a list of language rows for student id."""
 		cursor = None
 		results = None
+		student_language_xrefs = []
 		try:
 			connection = self._connection_pool.get_connection()
 			with connection:
 				cursor = connection.cursor()
 				with cursor:
-					cursor.execute(self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID, ([students_id]))
+					cursor.execute(self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID)
 					results = cursor.fetchall()
-			return results
+					student_language_xrefs = self._populate_student_language_xref_objects(results)
+
+			return student_language_xrefs
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
@@ -229,6 +249,28 @@ class MySQLPersistenceWrapper(ApplicationBase):
 					instructor.id = cursor.lastrowid
 				
 			return instructor
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+	def create_language(self, language:Languages)->Languages:
+		"""Create a new record in languages table."""
+		cursor = None
+		try:
+			connection = self._connection_pool.get_connection()
+			with connection:
+				cursor = connection.cursor()
+				with cursor:
+					cursor.execute(self.INSERT_ALL_STUDENTS_WITH_LANGUAGES, ([language.language, language.dialect, 
+								language.description]))
+					connection.commit()
+					self._logger.log_debug(f'Updated {cursor.rowcount} row.')
+					self._logger.log_debug(f'Last Row ID: {cursor.lastrowid}.')
+					language.language_id = cursor.lastrowid
+			
+			return language
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
@@ -307,7 +349,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		try:
 			for row in results:
 				languages = Languages()
-				languages.language_id = row[self.LanguageColumns['language id'].value]
+				languages.language_id = row[self.LanguageColumns['language_id'].value]
 				languages.language = row[self.LanguageColumns['language'].value]
 				languages.dialect = row[self.LanguageColumns['dialect'].value]
 				languages.description = row[self.LanguageColumns['description'].value]
@@ -317,5 +359,24 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		
 		except Exception as e:
 			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+	def _populate_student_language_xref_objects(self, results:List)->List[Languages]:
+		"""Populates and returns a list of student language xref."""
+		student_language_list = []
+		try:
+			for row in results:
+				student_language_xref = Student_Language_xref()
+				student_language_xref.students_id = row[self.Student_Language_XrefColumns['students_id'].value]
+				student_language_xref.grade = row[self.Student_Language_XrefColumns['grade'].value]
+				student_language_xref.student_update = row[self.Student_Language_XrefColumns['student_update'].value]
+				student_language_list.append(student_language_xref)
+
+			return student_language_list
+		
+		except Exception as e:
+			self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
 
  

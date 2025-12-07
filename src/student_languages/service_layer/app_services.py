@@ -8,6 +8,7 @@ from typing import List
 from student_languages.infrastructure_layer.students import Students
 from student_languages.infrastructure_layer.instructors import Instructors
 from student_languages.infrastructure_layer.languages import Languages
+from student_languages.infrastructure_layer.student_language_xref import Student_Language_xref
 
 
 
@@ -87,10 +88,42 @@ class AppServices(ApplicationBase):
 
         try:
             results = self.DB.select_all_students_with_languages()
+            # results_student = self.DB.select_all_students()
+
             return results
         
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+    def create_language(self, language:Languages)->Languages:
+        """Creates a new language in the database."""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        try:
+            results = self.DB.create_language(language)
+            return results
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+    
+    def get_all_student_languages_xref(self)->List[Student_Language_xref]:
+        """Returns a list of students and their grade reports."""
+        self._logger.log_debug(f'In {inspect.currentframe().f_code.co_name}()...')
+        student_language_xref_dict = {}
+        student_language_xref_dict['student_language_xref'] = []
+
+        try:
+            results = self.DB.select_students_status_from_student_id()
+
+            return results
+        
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
         
 
 

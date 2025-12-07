@@ -53,6 +53,13 @@ class ConsoleUI(ApplicationBase):
             case '8': sys.exit()
             case _: print(f"Invalid Menu Choice {menu_choice[0]}")
 
+
+
+    def start(self)->None:
+        while True:
+            self.display_menu()
+            self.process_menu_choice()
+
     
     def list_students(self)->None:
         """List students."""
@@ -134,15 +141,15 @@ class ConsoleUI(ApplicationBase):
         languages = self.app_services.get_all_students_with_languages()
         language_table = PrettyTable()
         language_table.field_names = ['Language ID', 'Language', 'Dialect', 'Description']
-        student_table = PrettyTable()
-        student_table.field_names = ['id', 'First Name', 'Middle Name', 'Last Name', 'Birthday', 'Gender']
-        for language in languages:
-            for student in student:
-                student_table.add_row([student.id, student.first_name, student.middle_name, student.last_name, 
-                            student.birthday, student.gender])
-            language_table.add_row([language.language_id, language.language, language.dialect, language.description])
+        # student_table = PrettyTable()
+        # student_table.field_names = ['id', 'First Name', 'Middle Name', 'Last Name', 'Birthday', 'Gender']
+        for lang in languages:
+            # for students in students:
+            #     student_table.add_row([students.id, students.first_name, students.middle_name, students.last_name, 
+            #                 students.birthday, students.gender])
+            language_table.add_row([lang.language_id, lang.language, lang.dialect, lang.description])
             language_table.add_divider()
-            language_table.clear_rows()
+            # language_table.clear_rows()
         print(language_table)
 
 
@@ -150,14 +157,32 @@ class ConsoleUI(ApplicationBase):
 
     def add_language(self)->None:
         """Add new language."""
-        print("add_language() method stub called...")
+        print("\n\tAdd Language...")
+        languages = Languages()
+        try:
+            languages.language = input('New Language: ')
+            languages.dialect = input('Known Dialect(Region): ')
+            languages.description = input('Description of Language: ')
+            languages = self.app_services.create_language(language=languages)
+            print(f'New Language ID: {languages.language_id}')
+
+        except Exception as e:
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
+
+
+
+
 
     def record_students_and_languages(self)->None:
         """Record students and their respective languages."""
-        print("record_students_and_languages() method stub called...")
+        print("\n\tRecord of students and Languages...")
+        student_language_xref = self.app_services.get_all_student_languages_xref()
+        student_language_xref_table  = PrettyTable()
+        student_language_xref_table.field_names = ['Students ID', 'Grade', 'Students Update']
+        for student_language_xref in student_language_xref:
+            student_language_xref_table.add_row([student_language_xref.students_id, student_language_xref.grade, 
+                    student_language_xref.student_update])
+            student_language_xref.add_divider()
+            student_language_xref.clear_rows()
+        print(student_language_xref)
 
-    
-    def start(self)->None:
-        while True:
-            self.display_menu()
-            self.process_menu_choice()
