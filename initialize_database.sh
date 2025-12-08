@@ -25,3 +25,9 @@ echo $d': Creating tables...' | tee -a  logs/create_tables.log
 mysql.exe < src/student_languages/create_tables.sql 2>&1 | tee -a logs/create_tables.log
 echo $d': Inserting test data...' | tee -a logs/insert_test_data.log
 mysql.exe < src/student_languages/insert_test_data.sql 2>&1 | tee -a logs/insert_test_data.log
+
+
+# Create Database Version 2
+echo "Running DB Version 2 Scripts..."
+echo $d': Altering students table...' | tee -a logs/alter_students_table.log
+mysql < src/student_languages/db_version_2/alter_students_table.sql 2>&1 | tee -a logs/alter_students_table.log

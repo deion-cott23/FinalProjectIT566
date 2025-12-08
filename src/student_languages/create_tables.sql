@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `languages` (
     `language` varchar(50) NOT NULL,
     `dialect` varchar(99) NOT NULL,
     `description` varchar(99) NOT NULL,
-    PRIMARY KEY (`languages_id`)
+    PRIMARY KEY(`languages_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores languages data.';
 
 -- Make languages.id column primary key and create index 
@@ -90,13 +90,13 @@ ALTER TABLE `languages`
     -- ADD PRIMARY KEY(`languages_id`),
     MODIFY `languages_id` int(11) NOT NULL AUTO_INCREMENT;
 
- /* -- Add Cascade Delete Constraint
+  -- Add Cascade Delete Constraint
 ALTER TABLE `languages`
     ADD CONSTRAINT `languages_ibfk_1`,
     FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`),
     -- DROP FOREIGN KEY `languages_ibfk_1`,
     -- DROP INDEX `languages_ibfk_1`;
-    ON UPDATE CASCADE; */
+    ON UPDATE CASCADE; 
  
 -- ***************************************************************************************************
 
@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `student_language_xref` (
     `language_id` int(11) NOT NULL,
     `proficiency` varchar(99) NOT NULL,
     `grade` char(2) NOT NULL,
-    `student_update` varchar(99) NOT NULL
+    `student_update` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Relates students to languages being studied.';
 
  -- Create indexes for student_id and languages

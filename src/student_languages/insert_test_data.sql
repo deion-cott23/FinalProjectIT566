@@ -59,19 +59,19 @@ INSERT INTO `languages` (languages_id, language, dialect, description)
 -- Insert test data into student_language_xref
 
 INSERT INTO `student_language_xref` (students_id, language_id, proficiency, grade, student_update)
-    VALUES (1, 1, '85, 80', 'B', 'Need improvement, can at least get an A-');
+    VALUES (1, 1, '85, 80', 'B', 'Have 6 lessons completed and 4 to go. Need improvement, can at least get an A-');
 
 INSERT INTO `student_language_xref` (students_id, language_id, proficiency, grade, student_update)
-    VALUES (2, 2, '94', 'A-', 'Keep up the good work, great job!');
+    VALUES (2, 2, '94', 'A-', 'Have 5 lessons completed and 3 to go. Keep up the good work, great job!');
 
 INSERT INTO `student_language_xref` (students_id, language_id, proficiency, grade, student_update)
-    VALUES (3, 3, '82', 'B-', 'Good job! Just have to make sure assignments are submitted on time!');
+    VALUES (3, 3, '82', 'B-', 'Have 5 lessons completed and 3 to go. Good job! Just have to make sure assignments are submitted on time!');
 
 INSERT INTO `student_language_xref` (students_id, language_id, proficiency, grade, student_update)
-    VALUES (4, 4, '90', 'A-', 'Great job performing, just need to submit other missing assignments for A+');
+    VALUES (4, 4, '90', 'A-', 'Have 6 lessons completed and 2 to go. Great job performing, just need to submit other missing assignments for A+');
 
 INSERT INTO `student_language_xref` (students_id, language_id, proficiency, grade, student_update)
-    VALUES (5, 5, '89', 'B+', 'Amazing job for such a hard language, will be able to obtain A- before end of semester.');
+    VALUES (5, 5, '89', 'B+', 'Have 7 lessons completed and 2 to go. Amazing job for such a hard language, will be able to obtain A- before end of semester.');
 
 
 
