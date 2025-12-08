@@ -47,7 +47,7 @@ class AppServices(ApplicationBase):
             return results
         
         except Exception as e:
-            self._logger.log_errr(f'{inspect.currentframe().f_code.co_name}: {e}')
+            self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
  
 

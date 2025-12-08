@@ -113,7 +113,7 @@ class ConsoleUI(ApplicationBase):
             instructors_table.add_row([instructors.id, instructors.first_name, instructors.middle_name, instructors.last_name,
                                             instructors.languages, instructors.critiques])
             instructors_table.add_divider()
-            languages_table.clear_rows()
+            # instructors_table.clear_rows()
         print(instructors_table)
 
 
@@ -147,24 +147,23 @@ class ConsoleUI(ApplicationBase):
             # for students in students:
             #     student_table.add_row([students.id, students.first_name, students.middle_name, students.last_name, 
             #                 students.birthday, students.gender])
-            language_table.add_row([lang.language_id, lang.language, lang.dialect, lang.description])
+            language_table.add_row([lang.languages_id, lang.language, lang.dialect, lang.description])
             language_table.add_divider()
             # language_table.clear_rows()
         print(language_table)
 
 
 
-
     def add_language(self)->None:
         """Add new language."""
         print("\n\tAdd Language...")
-        languages = Languages()
+        language = Languages()
         try:
-            languages.language = input('New Language: ')
-            languages.dialect = input('Known Dialect(Region): ')
-            languages.description = input('Description of Language: ')
-            languages = self.app_services.create_language(language=languages)
-            print(f'New Language ID: {languages.language_id}')
+            language.language = input('New Language: ')
+            language.dialect = input('Known Dialect(Region): ')
+            language.description = input('Description of Language: ')
+            language = self.app_services.create_language(language=language)
+            print(f'New Language ID: {language.languages_id}')
 
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
@@ -178,11 +177,11 @@ class ConsoleUI(ApplicationBase):
         print("\n\tRecord of students and Languages...")
         student_language_xref = self.app_services.get_all_student_languages_xref()
         student_language_xref_table  = PrettyTable()
-        student_language_xref_table.field_names = ['Students ID', 'Grade', 'Students Update']
-        for student_language_xref in student_language_xref:
-            student_language_xref_table.add_row([student_language_xref.students_id, student_language_xref.grade, 
-                    student_language_xref.student_update])
-            student_language_xref.add_divider()
-            student_language_xref.clear_rows()
-        print(student_language_xref)
+        student_language_xref_table.field_names = ['Students ID','Proficiency', 'Grade', 'Students Update']
+        for xref in student_language_xref:
+            student_language_xref_table.add_row([xref.students_id, xref.proficiency, xref.grade, 
+                    xref.student_update])
+            student_language_xref_table.add_divider()
+            # student_language_xref_table.clear_rows()
+        print(student_language_xref_table)
 

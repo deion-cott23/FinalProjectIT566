@@ -77,21 +77,27 @@ CREATE TABLE IF NOT EXISTS `languages` (
     `languages_id` int(11) NOT NULL,
     `language` varchar(50) NOT NULL,
     `dialect` varchar(99) NOT NULL,
-    `description` varchar(99) NOT NULL
+    `description` varchar(99) NOT NULL,
+    PRIMARY KEY (`languages_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Stores languages data.';
 
 -- Make languages.id column primary key and create index 
 ALTER TABLE `languages`
+    MODIFY `languages_id` int(11) NOT NULL AUTO_INCREMENT,
     ADD KEY `languages_ibfk_1` (`languages_id`);
 
-
--- Add Cascade Delete Constraint
 ALTER TABLE `languages`
-    ADD CONSTRAINT `languages_ibfk_1`
-    FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`)
-    ON DELETE CASCADE 
-    ON UPDATE CASCADE;
+    -- ADD PRIMARY KEY(`languages_id`),
+    MODIFY `languages_id` int(11) NOT NULL AUTO_INCREMENT;
 
+ /* -- Add Cascade Delete Constraint
+ALTER TABLE `languages`
+    ADD CONSTRAINT `languages_ibfk_1`,
+    FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`),
+    -- DROP FOREIGN KEY `languages_ibfk_1`,
+    -- DROP INDEX `languages_ibfk_1`;
+    ON UPDATE CASCADE; */
+ 
 -- ***************************************************************************************************
 
 -- STUDENT_LANGUAGE_XREF TABLE
@@ -122,11 +128,18 @@ ALTER TABLE `student_language_xref`
     ON UPDATE CASCADE;
 
 -- Add Cascade Delete Constraint on language_id key column (Need to ask Professor about this one)
- ALTER TABLE `student_language_xref`
+ALTER TABLE `student_language_xref`
     ADD CONSTRAINT `student_language_xref_ibfk_2`
     FOREIGN KEY (`language_id`) REFERENCES `languages` (`languages_id`)
     ON UPDATE CASCADE;
 
+
+
+-- ALTER TABLE `student_language_xref`
+--     ADD FOREIGN KEY (`students_id`) REFERENCES `students` (`id`)
+--     ON DELETE CASCADE,
+--     ADD FOREIGN KEY (`language_id`) REFERENCES `languages` (`language_id`)
+--     on DELETE CASCADE;
 
 
 

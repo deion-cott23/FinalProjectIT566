@@ -11,6 +11,7 @@ class Student_Language_xref():
 
     def __init__(self)->None:
         self.students_id:int = 0
+        self.proficiency:str = ""
         self.grade:str = ""
         self.student_update:str = ""
 
@@ -28,10 +29,11 @@ class Student_Language_xref():
     def to_json(self)->str:
         student_language_xref_dict = {}
         student_language_xref_dict['students_id'] = self.students_id
+        student_language_xref_dict['proficiency'] = self.proficiency
         student_language_xref_dict['grade'] = self.grade
         student_language_xref_dict['student_update'] = self.student_update
 
         # for item in self.students_id:
         #     student_language_xref_dict['students_id'].append(item.__dict__)
 
-        # return json.dumps(student_language_xref_dict)
+        return json.dumps(student_language_xref_dict)

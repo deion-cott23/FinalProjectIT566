@@ -57,7 +57,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		
 		#Student Language XRef ENUMS
 		self.Student_Language_XrefColumns = \
-			Enum('Student_Language_XrefColumns', [('students_id', 0), ('grade', 1), ('student_update', 2)])
+			Enum('Student_Language_XrefColumns', [('students_id', 0), ('proficiency', 1), ('grade', 2), ('student_update', 3)])
 
 
 
@@ -79,7 +79,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			f"WHERE (`students`.id = students_id) AND (`languages`.languages_id = language_id)"
 		
 		self.SELECT_STUDENTS_STATUS_FROM_STUDENT_ID = \
-			f"SELECT students_id, grade, student_update " \
+			f"SELECT students_id, proficiency, grade, student_update " \
 			f"FROM student_language_xref " \
 	
 		
@@ -95,7 +95,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			f"values(%s, %s, %s, %s, %s)"
 		
 		
-		self.INSERT_ALL_STUDENTS_WITH_LANGUAGES = \
+		self.INSERT_ALL_LANGUAGES = \
 			f"INSERT INTO languages " \
 			f"(language, dialect, description) " \
 			f"values(%s, %s, %s)"
@@ -263,12 +263,12 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			with connection:
 				cursor = connection.cursor()
 				with cursor:
-					cursor.execute(self.INSERT_ALL_STUDENTS_WITH_LANGUAGES, ([language.language, language.dialect, 
+					cursor.execute(self.INSERT_ALL_LANGUAGES, ([language.language, language.dialect, 
 								language.description]))
 					connection.commit()
 					self._logger.log_debug(f'Updated {cursor.rowcount} row.')
 					self._logger.log_debug(f'Last Row ID: {cursor.lastrowid}.')
-					language.language_id = cursor.lastrowid
+					language.languages_id = cursor.lastrowid
 			
 			return language
 		
@@ -349,7 +349,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 		try:
 			for row in results:
 				languages = Languages()
-				languages.language_id = row[self.LanguageColumns['language_id'].value]
+				languages.languages_id = row[self.LanguageColumns['language_id'].value]
 				languages.language = row[self.LanguageColumns['language'].value]
 				languages.dialect = row[self.LanguageColumns['dialect'].value]
 				languages.description = row[self.LanguageColumns['description'].value]
@@ -369,6 +369,7 @@ class MySQLPersistenceWrapper(ApplicationBase):
 			for row in results:
 				student_language_xref = Student_Language_xref()
 				student_language_xref.students_id = row[self.Student_Language_XrefColumns['students_id'].value]
+				student_language_xref.proficiency = row[self.Student_Language_XrefColumns['proficiency'].value]
 				student_language_xref.grade = row[self.Student_Language_XrefColumns['grade'].value]
 				student_language_xref.student_update = row[self.Student_Language_XrefColumns['student_update'].value]
 				student_language_list.append(student_language_xref)
