@@ -93,7 +93,7 @@ ALTER TABLE `languages`
   ALTER TABLE `languages`
     ADD CONSTRAINT `languages_ibfk_1`
     FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`)
-    ON DELETE CASCADE 
+    -- ON DELETE CASCADE 
     ON UPDATE CASCADE;
  
 -- ***************************************************************************************************

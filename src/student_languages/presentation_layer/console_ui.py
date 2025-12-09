@@ -165,6 +165,8 @@ class ConsoleUI(ApplicationBase):
             language = self.app_services.create_language(language=language)
             print(f'New Language ID: {language.languages_id}')
 
+            
+
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 

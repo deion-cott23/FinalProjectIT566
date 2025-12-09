@@ -103,6 +103,7 @@ class AppServices(ApplicationBase):
         try:
             results = self.DB.create_language(language)
             return results
+        
         except Exception as e:
             self._logger.log_error(f'{inspect.currentframe().f_code.co_name}: {e}')
 
