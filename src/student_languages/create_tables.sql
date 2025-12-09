@@ -90,13 +90,11 @@ ALTER TABLE `languages`
     -- ADD PRIMARY KEY(`languages_id`),
     MODIFY `languages_id` int(11) NOT NULL AUTO_INCREMENT;
 
-  -- Add Cascade Delete Constraint
-ALTER TABLE `languages`
-    ADD CONSTRAINT `languages_ibfk_1`,
-    FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`),
-    -- DROP FOREIGN KEY `languages_ibfk_1`,
-    -- DROP INDEX `languages_ibfk_1`;
-    ON UPDATE CASCADE; 
+  ALTER TABLE `languages`
+    ADD CONSTRAINT `languages_ibfk_1`
+    FOREIGN KEY (`languages_id`) REFERENCES `students` (`id`)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE;
  
 -- ***************************************************************************************************
 
